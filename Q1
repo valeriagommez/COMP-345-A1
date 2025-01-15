@@ -1,0 +1,71 @@
+# a function to tokenize text into words
+def tokenize(text):
+    words = []
+    numbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+
+    curWord = ""
+
+    # 1. separating the tokens using the SPACE character
+
+    wordsNoSpace = []
+
+    for char in text : 
+        
+        if char != " " :    # checking for spaces and separating the individual words
+            curWord = curWord + char
+        
+        else :  # if the character is a SPACE
+            wordsNoSpace.append(curWord)
+            curWord = ""
+
+    wordsNoSpace = text.split(" ") # splitting the tokens using SPACE characters
+
+    # 2. separate the punctuation marks into different tokens
+    singlePunctuation = ['.', '!', '?', ';', ':', '...', ',', '%']
+    wordsSeparatePunct = []
+
+    for token in wordsNoSpace :    # at this point, all tokens are separated by SPACES
+
+        punctuationFound = False
+        charToRemove = ""
+        isLink = "https" in token
+        isNumber = False
+
+        for punctChar in singlePunctuation : 
+
+            if (punctChar in token) and not (isLink): # if there's a punctuation mark and it's not a link
+                punctuationFound = True
+                charToRemove = punctChar
+                
+        if punctuationFound : 
+
+            charBefore = token[token.find(charToRemove) - 2]
+            charAfter = token[token.find(charToRemove) - 1]
+
+            if (charBefore in numbers) or (charAfter in numbers): 
+                isNumber = True
+
+            if not isNumber : 
+                token = token.replace(charToRemove, "")
+                wordsSeparatePunct.append(token)
+                wordsSeparatePunct.append(charToRemove)
+
+            if isNumber : # do not separate numbers with decimal points
+                wordsSeparatePunct.append(token)
+
+        else : 
+            wordsSeparatePunct.append(token)
+
+    print(wordsSeparatePunct)
+    return words
+
+def main():
+    text = "@NBCSAthletics Ya just knew the season wouldn’t go by without some bench clearing brawls... Covid or not. Behaviors can’t be changed because of rules, sadly"
+    tokenize(text)
+
+if __name__=="__main__":
+    main()
+
+
+
+
