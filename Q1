@@ -7,17 +7,6 @@ def tokenize(text):
 
     # 1. separating the tokens using the SPACE character
 
-    wordsNoSpace = []
-
-    for char in text : 
-        
-        if char != " " :    # checking for spaces and separating the individual words
-            curWord = curWord + char
-        
-        else :  # if the character is a SPACE
-            wordsNoSpace.append(curWord)
-            curWord = ""
-
     wordsNoSpace = text.split(" ") # splitting the tokens using SPACE characters
 
     # 2. separate the punctuation marks into different tokens
@@ -39,13 +28,14 @@ def tokenize(text):
                 
         if punctuationFound : 
 
+            # Check if the current token is a number
             charBefore = token[token.find(charToRemove) - 2]
             charAfter = token[token.find(charToRemove) - 1]
 
             if (charBefore in numbers) or (charAfter in numbers): 
                 isNumber = True
 
-            if not isNumber : 
+            if not isNumber : # if it's not a number, then separate them
                 token = token.replace(charToRemove, "")
                 wordsSeparatePunct.append(token)
                 wordsSeparatePunct.append(charToRemove)
@@ -53,10 +43,30 @@ def tokenize(text):
             if isNumber : # do not separate numbers with decimal points
                 wordsSeparatePunct.append(token)
 
-        else : 
+        else : # do not separate if there are no punctuations
             wordsSeparatePunct.append(token)
 
-    print(wordsSeparatePunct)
+    # 3. find contractions and count them as two
+
+    contractions = ["'m", "'re", "n't", "'s", "'ll", "'ve"] # continue this
+
+    for token in wordsSeparatePunct : 
+        contractionFound = False
+
+        for cur in contractions : 
+            if cur in token :   # if the word contains a contraction 
+                contractionFound = True
+                contraction = cur
+        
+        if contractionFound : 
+            token = token.replace(contraction, "")
+            words.append(token)
+            words.append(contraction)
+
+        else : 
+            words.append(token)
+
+    print(words)
     return words
 
 def main():
