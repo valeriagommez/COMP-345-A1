@@ -1,15 +1,15 @@
 def clean_a_tweet(tokenized_tweet):
-  # FILL ME
     clean_tokenized_tweet = []
     singlePunctuation = ['.', '!', '?', ';', ':', '...', ',', '%']
 
     for token in tokenized_tweet : 
         if not (token in singlePunctuation) : # only append if it's not a punctuation character
             
-            if token[0] == "@": # if the token is a username
-                token = "@USER"
+            if (len(token) > 0) : 
+                if (token[0] == "@") : # if the token is a username
+                    token = "@USER"
             
-            elif "https" in token : # if the token is a URL
+            if "https" in token : # if the token is a URL
                 token = "URL"
 
             else :  # for other normal tokens
