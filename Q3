@@ -1,6 +1,8 @@
-# Write your code to build top 10 unigrams and bigrams
-# Hint: You can use python dictionary or collections.Counter().
 from collections import Counter
+from q1 import tokenize
+from q2 import clean_a_tweet
+
+f = open("/content/drive/My Drive/tweets/20000_tweets.txt", "r")
 
 def count_unigrams (cleanTweets) :
     countDict = dict()  # create a dictionary for all the tokens in the tweets
@@ -15,23 +17,22 @@ def count_unigrams (cleanTweets) :
     return countDict
 
 def main():
-    # cleanTweet = ['@USER', 'ya', 'just', 'knew', 'the', 'season', 'wouldn’t', 'go', 'by', 'without', 'some', 'bench', 'clearing', 'brawls', 'covid', 'or', 'not', 'behaviors', 'can’t', 'be', 'changed', 'because', 'of', 'rules', 'sadly']
-    # print(cleanTweet)
-
     cleanTweets = []
     uncleanTweets = []
 
     for tweet in f :
         uncleanTweets.append(tokenize(tweet))
-    
+
     for tweet in uncleanTweets : 
         cleanTweets.append(clean_a_tweet(tweet))
 
     unigramCounts = count_unigrams(cleanTweets)
+
     # Sorting the dictionary in descending form, it's now an array of tuples
     unigramSorted = sorted(unigramCounts.items(), key=lambda unigram:unigram[1], reverse=True)
 
     print("Top 10 Unigrams")
+
     for i in range(0, 10) : 
         print(unigramSorted[i][0], "    ", unigramSorted[i][1])
 
